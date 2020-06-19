@@ -4,9 +4,9 @@ import matplotlib.pyplot as plt
 
 def main_method():
     #variables for easy testing
-    num_clusters = 8
-    num_data_entries = 18
-    spread = 350
+    num_clusters = 3
+    num_data_entries = 20
+    spread = 400
     x_range = 1000
     y_range = 1000
     

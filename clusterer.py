@@ -2,6 +2,12 @@ import random
 import math
 import matplotlib.pyplot as plt
 import main
+from numpy.random import choice
+
+# Function to determine the euclidian distance between two points
+def Distance(point_a, point_b):
+    return math.sqrt((point_a[0] - point_b[0])**2 + (point_a[1] - point_b[1])**2)
+
 
 # Class to hold information about any point
 class Point:
@@ -17,7 +23,7 @@ class Point:
         shortest = math.inf
 
         for i in range(len(centers)):
-            dist = math.sqrt( (centers[i][0] - self.data[0])**2 + (centers[i][1] - self.data[1])**2 )
+            dist = Distance(centers[i], self.data)
 
             if dist < shortest:
                 shortest = dist
@@ -40,27 +46,33 @@ class Clusterer:
             self.points.append(Point(self.data[i]))
         
         # Initialize cluster centers and cluster array
-        self.centers = []
         self.clusters = []
-        randoms_taken = []
+
+        self.select_centroids()
 
         for _ in range(self.num_centers):
             self.clusters.append([])
 
-        for _ in range(num_centers):
-            
-            rand = 0
+    # Class to choose initial centers using k means ++ method
+    def select_centroids(self):
+        
+        self.centers = []
+        probabilities = [1]*len(self.data)
 
-            while rand in randoms_taken:
-                rand = random.randint(0, len(self.data))
-            
-            self.centers.append(self.data[rand])
-            randoms_taken.append(rand)
+        for i in range(self.num_centers):
+                        
+            self.centers.append(choice(self.points, 1, probabilities)[0].data)
+
+            for i in range(len(self.points)):
+                probabilities[i] = Distance(self.centers[self.points[i].find_nearest_cluster(self.centers)], self.points[i].data)**2
+
 
     # Method to loop until all centers are found only stopping when no point changed cluster
     def findClusters(self):
         
         counter = 0
+
+        for point in self.points: point.cluster = -1
         
         while True:
 
@@ -125,7 +137,9 @@ class Clusterer:
             ]            
 
         for i in range(self.num_centers):
-            plt.scatter(*zip(*self.List_from_Points(i)), c = colours[i])
+
+            if len(self.List_from_Points(i)) != 0:
+                plt.scatter(*zip(*self.List_from_Points(i)), c = colours[i])
 
         plt.scatter(*zip(*self.centers), c = 'red')
 
@@ -135,3 +149,14 @@ class Clusterer:
 
 if __name__ == "__main__":
     main.main_method()
+
+
+# IDEAS
+
+# https://www.analyticsvidhya.com/blog/2019/08/comprehensive-guide-k-means-clustering/
+# https://datahack.analyticsvidhya.com/contest/practice-problem-loan-prediction-iii/?utm_source=blog&utm_medium=comprehensive-guide-k-means-clustering#LeaderBoard - hackathon
+
+# Inertia = sum of intra cluster distance - keep going until minimized
+# Dunn index = min(inter cluster distance)/max(intra cluster distance) - keep going until minimized
+
+# get dataset from site
