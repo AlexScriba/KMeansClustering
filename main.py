@@ -1,22 +1,23 @@
 from test_data import Test_Data
-from clusterer import Clusterer
+import clusterer as cl
 import matplotlib.pyplot as plt
 
-# Create test data
-tdata = Test_Data(3, 20, 200, 1000, 1000)
-data = tdata.data
+def main_method():
+    # Create test data
+    # num_clusters, num_data_entries, spread, x_range, y_range
+    tdata = Test_Data(3, 25, 250, 1000, 1000)
+    data = tdata.data
 
-# Show initial data unclustered
-plt.scatter(*zip(*data))
-plt.show()
+    # Show initial data unclustered
+    plt.scatter(*zip(*data))
+    plt.show()
 
-# Cluster Data
-cluster = Clusterer(3, data)
-cluster.findClusters()
+    # Cluster Data
+    cluster = cl.Clusterer(3, data)
+    cluster.findClusters()
 
-# Display clustered data
-plt.scatter(*zip(*cluster.List_from_Points(0)), c='blue')
-plt.scatter(*zip(*cluster.List_from_Points(1)) , c='green')
-plt.scatter(*zip(*cluster.List_from_Points(2)) , c='pink')
-plt.scatter(*zip(*cluster.centers), c='red')
-plt.show()
+    # Display clustered data
+    cluster.display_clusters(['purple', 'black', 'grey'])
+
+if __name__ == "__main__":
+    main_method()

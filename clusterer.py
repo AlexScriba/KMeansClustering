@@ -1,6 +1,7 @@
 import random
-import matplotlib.pyplot as plt
 import math
+import matplotlib.pyplot as plt
+import main
 
 # Class to hold information about any point
 class Point:
@@ -20,7 +21,7 @@ class Point:
                 shortest = dist
                 self.cluster = i
         
-        return self.cluster
+        return self.cluster 
 
 # Class to handle the clustering of passed in data
 class Clusterer:
@@ -72,13 +73,15 @@ class Clusterer:
                     changed = True
 
             for i in range(self.num_centers):
-                self.centers[i] = self.Find_New_Pos(self.clusters[i])
+                self.centers[i] = self.Find_New_Pos(i)
 
             if not changed:
                 break
 
     #method to find the new position of a given center
-    def Find_New_Pos(self, points):
+    def Find_New_Pos(self, index):
+
+        points = self.clusters[index]
         num_points = len(points)
 
         x = 0
@@ -98,3 +101,28 @@ class Clusterer:
             result.append(point.data)
 
         return result
+
+    # Method to display the clusters after clustering
+    def display_clusters(self, colours = None):
+
+        if colours == None:
+            colours = [
+                'blue',
+                'green',
+                'pink',
+                'yellow',
+                'grey',
+                'black',
+                'lightblue',
+                'purple'
+            ]            
+
+        for i in range(self.num_centers):
+            plt.scatter(*zip(*self.List_from_Points(i)), c = colours[i])
+
+        plt.scatter(*zip(*self.centers), c = 'red')
+
+        plt.show()
+
+if __name__ == "__main__":
+    main.main_method()
