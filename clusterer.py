@@ -12,7 +12,7 @@ class Point:
 
     def find_nearest_cluster(self, centers):
         
-        shortest = 1000000000
+        shortest = math.inf
 
         for i in range(len(centers)):
             dist = math.sqrt( (centers[i][0] - self.data[0])**2 + (centers[i][1] - self.data[1])**2 )
@@ -107,14 +107,14 @@ class Clusterer:
 
         if colours == None:
             colours = [
-                'blue',
+                'lightblue',
                 'green',
-                'pink',
+                'purple',
                 'yellow',
                 'grey',
                 'black',
-                'lightblue',
-                'purple'
+                'blue',
+                'pink'
             ]            
 
         for i in range(self.num_centers):
@@ -123,6 +123,8 @@ class Clusterer:
         plt.scatter(*zip(*self.centers), c = 'red')
 
         plt.show()
+
+
 
 if __name__ == "__main__":
     main.main_method()
