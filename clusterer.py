@@ -6,10 +6,12 @@ import main
 # Class to hold information about any point
 class Point:
 
+    # Constructor
     def __init__(self, data):
         self.data = data
         self.cluster = -1
 
+    # Finds nearest center
     def find_nearest_cluster(self, centers):
         
         shortest = math.inf
@@ -57,9 +59,13 @@ class Clusterer:
 
     # Method to loop until all centers are found only stopping when no point changed cluster
     def findClusters(self):
+        
+        counter = 0
+        
         while True:
 
             changed = False
+            counter += 1
 
             for cluster in self.clusters:
                 cluster.clear()
@@ -76,9 +82,10 @@ class Clusterer:
                 self.centers[i] = self.Find_New_Pos(i)
 
             if not changed:
+                print(counter)
                 break
 
-    #method to find the new position of a given center
+    # Method to find the new position of a given center
     def Find_New_Pos(self, index):
 
         points = self.clusters[index]
